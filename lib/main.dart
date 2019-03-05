@@ -19,11 +19,32 @@ class HomeScreen extends StatelessWidget {
   HomeScreen({Key key, this.title}) : super(key: key);
 
   final String title;
-  final List<String> messages = const [
-    'My first message',
-    'You won lottery',
-    'You should read this message',
-    'An email from Google'
+  final messages = const [
+    {
+      'subject': 'My first message',
+      'body':
+          'This message is very very long so you can easily understand to read and also see. You should reply after see it.',
+    },
+    {
+      'subject': 'You won lottery',
+      'body':
+          'This message is very very long so you can easily understand to read and also see. You should reply after see it.',
+    },
+    {
+      'subject': 'You should read this message',
+      'body':
+          'This message is very very long so you can easily understand to read and also see. You should reply after see it.',
+    },
+    {
+      'subject': 'An email from Google',
+      'body':
+          'This message is very very long so you can easily understand to read and also see. You should reply after see it.',
+    },
+    {
+      'subject': 'You won another lottery',
+      'body':
+          'This message is very very long so you can easily understand.',
+    }
   ];
 
   @override
@@ -36,20 +57,18 @@ class HomeScreen extends StatelessWidget {
         itemCount: messages.length,
         separatorBuilder: (BuildContext context, int index) => Divider(),
         itemBuilder: (BuildContext context, int index) {
-          var title = messages[index];
+          var message = messages[index];
           return ListTile(
             leading: CircleAvatar(
               child: Text('VK'),
             ),
-            title: Text(title),
+            title: Text(message['subject']),
             subtitle: Text(
-              'This message is very very long so you can easily understand to read and also see. You should reply after see it.',
+              message['body'],
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
-              ),
-
+            ),
             isThreeLine: true,
-
           );
         },
       ),
