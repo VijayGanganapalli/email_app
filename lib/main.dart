@@ -19,33 +19,7 @@ class HomeScreen extends StatelessWidget {
   HomeScreen({Key key, this.title}) : super(key: key);
 
   final String title;
-  final messages = const [
-    {
-      'subject': 'My first message',
-      'body':
-          'This message is very very long so you can easily understand to read and also see. You should reply after see it.',
-    },
-    {
-      'subject': 'You won lottery',
-      'body':
-          'This message is very very long so you can easily understand to read and also see. You should reply after see it.',
-    },
-    {
-      'subject': 'You should read this message',
-      'body':
-          'This message is very very long so you can easily understand to read and also see. You should reply after see it.',
-    },
-    {
-      'subject': 'An email from Google',
-      'body':
-          'This message is very very long so you can easily understand to read and also see. You should reply after see it.',
-    },
-    {
-      'subject': 'You won another lottery',
-      'body':
-          'This message is very very long so you can easily understand.',
-    }
-  ];
+  final messages = const [];
 
   @override
   Widget build(BuildContext context) {
