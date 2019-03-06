@@ -28,5 +28,10 @@
         "subject": "Another entry from JSON",
         "body":
             "This message is very very long so you can easily understand."
+      },
+      {
+        "subject": "Is automatic serializable working?",
+        "body":
+            "This message is very very long so you can easily understand to read and also see. You should reply after see it."
       }
 ]
