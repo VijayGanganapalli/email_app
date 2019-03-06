@@ -23,5 +23,10 @@
         "subject": "You won another lottery",
         "body":
             "This message is very very long so you can easily understand."
+      },
+      {
+        "subject": "Another entry from JSON",
+        "body":
+            "This message is very very long so you can easily understand."
       }
 ]
