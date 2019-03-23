@@ -3,6 +3,7 @@ import 'package:email_app/compose_button.dart';
 import 'package:email_app/message_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class MessageList extends StatefulWidget {
   MessageList({Key key, this.title}) : super(key: key);
@@ -37,9 +38,8 @@ class _MessageListState extends State<MessageList> {
           IconButton(
             icon: Icon(Icons.refresh),
             onPressed: () async {
-              var _messages = await Message.browse();
               setState(() {
-                messages = _messages;
+                future = Message.browse();
               });
             },
           )
@@ -132,26 +132,64 @@ class _MessageListState extends State<MessageList> {
                     Divider(),
                 itemBuilder: (BuildContext context, int index) {
                   Message message = messages[index];
-                  return ListTile(
-                    leading: CircleAvatar(
-                      child: Text('VK'),
+
+                  return Slidable(
+                    key: ObjectKey(message),
+                    delegate: SlidableDrawerDelegate(),
+                    actionExtentRatio: 0.25,
+                    actions: <Widget>[
+                      IconSlideAction(
+                        caption: 'Archive',
+                        color: Colors.blue,
+                        icon: Icons.archive,
+                        onTap: () {},
+                      ),
+                      IconSlideAction(
+                        caption: 'Share',
+                        color: Colors.indigo,
+                        icon: Icons.share,
+                        onTap: () {},
+                      ),
+                    ],
+                    secondaryActions: <Widget>[
+                      IconSlideAction(
+                        caption: 'More',
+                        color: Colors.black45,
+                        icon: Icons.more_horiz,
+                        onTap: () {},
+                      ),
+                      IconSlideAction(
+                        caption: 'Delete',
+                        color: Colors.red,
+                        icon: Icons.delete,
+                        onTap: () {
+                          setState(() {
+                           messages.removeAt(index); 
+                          });
+                        },
+                      ),
+                    ],
+                    child: ListTile(
+                      leading: CircleAvatar(
+                        child: Text('VK'),
+                      ),
+                      title: Text(message.subject),
+                      subtitle: Text(
+                        message.body,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                MessageDetail(message.subject, message.body),
+                          ),
+                        );
+                      },
+                      isThreeLine: true,
                     ),
-                    title: Text(message.subject),
-                    subtitle: Text(
-                      message.body,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              MessageDetail(message.subject, message.body),
-                        ),
-                      );
-                    },
-                    isThreeLine: true,
                   );
                 },
               );
