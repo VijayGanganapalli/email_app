@@ -1,17 +1,48 @@
 import 'package:email_app/app_drawer.dart';
+import 'package:email_app/contacts_manager.dart';
 import 'package:flutter/material.dart';
 
 class ContactsScreen extends StatelessWidget {
+  final ContactManager manager = ContactManager();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Contacts'),
+        actions: <Widget>[
+          Chip(
+            label: StreamBuilder<int>(
+              stream: manager.contactCounter,
+              builder: (context, snapshot) {
+                return Text(
+                  (snapshot.data ?? 0).toString(),
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                );
+              },
+            ),
+            backgroundColor: Colors.white,
+          ),
+          Padding(
+            padding: EdgeInsets.only(right: 16.0),
+          ),
+        ],
       ),
       drawer: AppDrawer(),
-      body: Center(
-        child: Text('Contacts'),
-      ),
+      body: StreamBuilder<Object>(
+          stream: manager.contactListNow,
+          builder: (context, snapshot) {
+            List<String> contacts = snapshot.data;
+            return ListView.separated(
+              itemCount: contacts.length,
+              itemBuilder: (BuildContext context, int index) {
+                return ListTile(
+                  title: Text(contacts[index]),
+                );
+              },
+              separatorBuilder: (BuildContext context, int index) => Divider(),
+            );
+          }),
     );
   }
 }
