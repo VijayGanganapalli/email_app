@@ -9,8 +9,13 @@ class CalendarScreen extends StatelessWidget {
         title: Text('Calendar'),
       ),
       drawer: AppDrawer(),
-      body: Center(
-        child: Text('Calendar'),
+      body: StreamBuilder<Object>(
+        stream: null,
+        builder: (context, snapshot) {
+          return Center(
+            child: Text('Calendar'),
+          );
+        }
       ),
     );
   }
