@@ -1,7 +1,9 @@
 import 'package:email_app/app_drawer.dart';
+import 'package:email_app/contact_list_builder.dart';
 import 'package:email_app/contacts_manager.dart';
 import 'package:email_app/model/contact.dart';
 import 'package:flutter/material.dart';
+import 'package:email_app/contact_search_delegate.dart';
 
 class ContactsScreen extends StatelessWidget {
   final ContactManager manager = ContactManager();
@@ -24,42 +26,37 @@ class ContactsScreen extends StatelessWidget {
             ),
             backgroundColor: Colors.white,
           ),
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () {
+              showSearch(
+                context: context,
+                delegate: ContactSearchDelegate(manager: manager),
+              );
+            },
+          ),
           Padding(
             padding: EdgeInsets.only(right: 16.0),
           ),
         ],
       ),
       drawer: AppDrawer(),
-      body: StreamBuilder<List<Contact>>(
+      body: ContactListBuilder(
         stream: manager.contactListNow,
-        builder: (BuildContext context, AsyncSnapshot<List<Contact>> snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.none:
-            case ConnectionState.waiting:
-            case ConnectionState.active:
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            case ConnectionState.done:
-              if (snapshot.hasError)
-                return Text('There was an error: ${snapshot.error}');
-              List<Contact> contacts = snapshot.data;
+        builder: (context, contacts) {
+          return ListView.separated(
+            itemCount: contacts.length,
+            itemBuilder: (BuildContext context, int index) {
+              Contact _contact = contacts[index];
 
-              return ListView.separated(
-                itemCount: contacts.length,
-                itemBuilder: (BuildContext context, int index) {
-                  Contact _contact = contacts[index];
-
-                  return ListTile(
-                    leading: CircleAvatar(),
-                    title: Text(_contact.name),
-                    subtitle: Text(_contact.phone),
-                  );
-                },
-                separatorBuilder: (BuildContext context, int index) =>
-                    Divider(),
+              return ListTile(
+                leading: CircleAvatar(),
+                title: Text(_contact.name),
+                subtitle: Text(_contact.phone),
               );
-          }
+            },
+            separatorBuilder: (BuildContext context, int index) => Divider(),
+          );
         },
       ),
     );
